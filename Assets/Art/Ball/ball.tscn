@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://dt543icjradca"]
+
+[ext_resource type="Script" uid="uid://v15nbavskfhj" path="res://Assets/Art/Ball/ball.gd" id="1_77ri6"]
+[ext_resource type="Texture2D" uid="uid://gru8p7a50up1" path="res://Assets/Art/Environment/Orange/texture_01.png" id="1_ygief"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ygief"]
+bounce = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_77ri6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13tqr"]
+albedo_texture = ExtResource("1_ygief")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iiwn1"]
+radius = 0.5151019
+
+[node name="Ball" type="RigidBody3D" groups=["Ball"]]
+physics_material_override = SubResource("PhysicsMaterial_ygief")
+continuous_cd = true
+linear_damp = 0.1
+angular_damp = 0.5
+script = ExtResource("1_77ri6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("SphereMesh_77ri6")
+surface_material_override/0 = SubResource("StandardMaterial3D_13tqr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = SubResource("SphereShape3D_iiwn1")

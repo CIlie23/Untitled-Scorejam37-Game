@@ -1,0 +1,47 @@
+[gd_scene load_steps=10 format=3 uid="uid://bvvgcvbggltdp"]
+
+[ext_resource type="Script" uid="uid://d1m0b74w4dwri" path="res://Scenes/world.gd" id="1_5a7ea"]
+[ext_resource type="Texture2D" uid="uid://bu1rlyf5p1kn3" path="res://Assets/Art/Environment/Dark/texture_01.png" id="1_a02cp"]
+[ext_resource type="PackedScene" uid="uid://hcj3icu5cfr0" path="res://Assets/Art/Tank/tank.tscn" id="2_go701"]
+[ext_resource type="PackedScene" uid="uid://dt543icjradca" path="res://Assets/Art/Ball/ball.tscn" id="4_8j60k"]
+[ext_resource type="PackedScene" uid="uid://cui5wr0adk0gn" path="res://Assets/Art/Shell/shell.tscn" id="5_fo5ed"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_go701"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_5a7ea"]
+sky_material = SubResource("ProceduralSkyMaterial_go701")
+
+[sub_resource type="Environment" id="Environment_8j60k"]
+background_mode = 2
+sky = SubResource("Sky_5a7ea")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_go701"]
+albedo_texture = ExtResource("1_a02cp")
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_5a7ea")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8j60k")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -1.1126099, 0, 1.0563965)
+use_collision = true
+size = Vector3(19.26715, 1, 17.241455)
+material = SubResource("StandardMaterial3D_go701")
+
+[node name="Tank" parent="." instance=ExtResource("2_go701")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4648438, 0)
+
+[node name="Ball" parent="." instance=ExtResource("4_8j60k")]
+transform = Transform3D(0.9975592, 0, -0.06982612, 0, 1, 0, 0.06982612, 0, 0.9975592, -2.52496, 6.130554, 2.9025774)
+
+[node name="Shell" parent="." instance=ExtResource("5_fo5ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6288147, 1.2500019, -2.2689862)

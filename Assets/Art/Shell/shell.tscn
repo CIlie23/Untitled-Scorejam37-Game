@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cui5wr0adk0gn"]
+
+[ext_resource type="Texture2D" uid="uid://bc2u0u8yh0t8h" path="res://Assets/Art/Environment/Dark/texture_04.png" id="1_flfc2"]
+[ext_resource type="Script" uid="uid://cj017k4djuy3u" path="res://Assets/Art/Shell/shell.gd" id="1_g4505"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g4505"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l6tro"]
+albedo_texture = ExtResource("1_flfc2")
+
+[node name="Shell" type="Node3D"]
+script = ExtResource("1_g4505")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.594, 0, 0, 0)
+mesh = SubResource("BoxMesh_g4505")
+surface_material_override/0 = SubResource("StandardMaterial3D_l6tro")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.037745357)
+target_position = Vector3(0, 0, -0.5)
+
+[node name="Lifespan" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="Lifespan" to="." method="_on_lifespan_timeout"]

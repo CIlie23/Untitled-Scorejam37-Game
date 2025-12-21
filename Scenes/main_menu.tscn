@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ns47jgwcqdvj"]
+
+[ext_resource type="PackedScene" uid="uid://10aipp4jmgtd" path="res://addons/talo/samples/leaderboards/leaderboard.tscn" id="1_28flt"]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Leaderboard" parent="." instance=ExtResource("1_28flt")]
+position = Vector2(42, -25)
