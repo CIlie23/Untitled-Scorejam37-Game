@@ -1,13 +1,12 @@
-extends RigidBody3D
+extends Node3D
 
-var lastTouchedBy
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	animation_player.play("pan")
+	animation_player
 
-func hit():
-	print("Ive been hit!")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

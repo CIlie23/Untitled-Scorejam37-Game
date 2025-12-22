@@ -18,9 +18,15 @@ config/icon="res://icon.svg"
 [autoload]
 
 Talo="*res://addons/talo/talo_manager.gd"
+Global="*res://Scripts/Global.gd"
 
 [display]
 
+window/size/viewport_width=512
+window/size/viewport_height=300
+window/size/window_width_override=1024
+window/size/window_height_override=600
+window/stretch/mode="viewport"
 mouse_cursor/custom_image="uid://biwv4micftm0w"
 mouse_cursor/custom_image_hotspot=Vector2(16, 16)
 
@@ -31,6 +37,11 @@ enabled=PackedStringArray("res://addons/talo/plugin.cfg")
 [global_group]
 
 Ball=""
+Blue=""
+Red=""
+GoalBlue=""
+GoalRed=""
+Spawner=""
 
 [input]
 

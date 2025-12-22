@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxksc8gnpumro"
-path.s3tc="res://.godot/imported/texture_08.png-6a99e7603c99279e19e191fe65bbf4bc.s3tc.ctex"
+uid="uid://cahdkje56mjed"
+path.s3tc="res://.godot/imported/goalwall.jpg-585a7ab71eedcb3a609e981a0e35a580.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Art/Environment/Dark/texture_08.png"
-dest_files=["res://.godot/imported/texture_08.png-6a99e7603c99279e19e191fe65bbf4bc.s3tc.ctex"]
+source_file="res://Assets/Art/goalwall.jpg"
+dest_files=["res://.godot/imported/goalwall.jpg-585a7ab71eedcb3a609e981a0e35a580.s3tc.ctex"]
 
 [params]
 

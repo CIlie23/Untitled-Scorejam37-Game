@@ -1,8 +1,171 @@
-[gd_scene load_steps=2 format=3 uid="uid://ns47jgwcqdvj"]
+[gd_scene load_steps=19 format=3 uid="uid://ns47jgwcqdvj"]
 
-[ext_resource type="PackedScene" uid="uid://10aipp4jmgtd" path="res://addons/talo/samples/leaderboards/leaderboard.tscn" id="1_28flt"]
+[ext_resource type="PackedScene" uid="uid://35avh2pulfg3" path="res://Assets/Art/Tank/enemy_tank.tscn" id="1_28flt"]
+[ext_resource type="Script" uid="uid://dvu4c4ij02qsg" path="res://Scenes/main_menu.gd" id="1_ce3w2"]
+[ext_resource type="PackedScene" uid="uid://10aipp4jmgtd" path="res://addons/talo/samples/leaderboards/leaderboard.tscn" id="2_48xlc"]
+[ext_resource type="Texture2D" uid="uid://csxh0usqoybq3" path="res://Assets/Art/wall.jpg" id="4_ce3w2"]
 
-[node name="MainMenu" type="Node2D"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_28flt"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[node name="Leaderboard" parent="." instance=ExtResource("1_28flt")]
-position = Vector2(42, -25)
+[sub_resource type="Sky" id="Sky_48xlc"]
+sky_material = SubResource("ProceduralSkyMaterial_28flt")
+
+[sub_resource type="Environment" id="Environment_1ehe0"]
+background_mode = 2
+sky = SubResource("Sky_48xlc")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ce3w2"]
+albedo_color = Color(1, 1, 1, 0)
+albedo_texture = ExtResource("4_ce3w2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n45e2"]
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cp0ys"]
+albedo_texture = ExtResource("4_ce3w2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trj04"]
+albedo_texture = ExtResource("4_ce3w2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5v1tr"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_16hvj"]
+material = SubResource("StandardMaterial3D_5v1tr")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_opfnp"]
+albedo_texture = ExtResource("4_ce3w2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yhxw7"]
+albedo_texture = ExtResource("4_ce3w2")
+
+[sub_resource type="Animation" id="Animation_ce3w2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.051714107, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1ehe0"]
+resource_name = "pan"
+length = 6.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.051714107, 0), Vector3(0, -0.1809732, 0), Vector3(0, 0.051714107, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n45e2"]
+_data = {
+&"RESET": SubResource("Animation_ce3w2"),
+&"pan": SubResource("Animation_1ehe0")
+}
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_ce3w2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1ehe0")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.9986631, 0, 0.05169106, 0, 1, 0, -0.05169106, 0, 0.9986631, -0.3300159, 0.87934023, 1.2618427)
+
+[node name="Tank" parent="." instance=ExtResource("1_28flt")]
+transform = Transform3D(0.68017095, 0, -0.73305357, 0, 1, 0, 0.73305357, 0, 0.68017095, 0.84656274, 0, -1)
+script = null
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 143.0
+offset_right = 172.0
+offset_bottom = 192.0
+text = "Evil ass tank soccer"
+
+[node name="Button" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 221.0
+offset_right = 71.0
+offset_bottom = 252.0
+text = "PLAY"
+
+[node name="Leaderboard" parent="CanvasLayer/Control" instance=ExtResource("2_48xlc")]
+visible = false
+position = Vector2(144, -17)
+scale = Vector2(0.5, 0.5)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.88647836, 0, 0.46277007, 0, 1, 0, -0.46277007, 0, 0.88647836, 0, -0.8053782, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(1.9999998, -0.0005297187, -0.00035572052, 0.00052966946, 1.9999999, -0.00028333205, 0.00035578012, 0.00028323982, 2, 0.11800903, -0.47469664, 1.0548937)
+use_collision = true
+size = Vector3(12.706436, 1, 17.241455)
+material = SubResource("StandardMaterial3D_ce3w2")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(1.9999998, -0.0005297187, -0.00035571758, 0.00052966946, 1.9999999, -0.00028333205, 0.00035579098, 0.00028323985, 2, 0.11118486, 25.265158, 1.0585425)
+use_collision = true
+size = Vector3(12.706436, 0.001, 17.241455)
+material = SubResource("StandardMaterial3D_n45e2")
+
+[node name="MeshInstance3D2" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(0.6005936, -0.0021507628, -0.006204236, 0.00015905807, 8.120395, -0.004941726, 0.000106842905, 0.0011500098, 34.88293, 12.665038, 3.705002, 1.0304418)
+use_collision = true
+material = SubResource("StandardMaterial3D_cp0ys")
+
+[node name="MeshInstance3D5" type="CSGBox3D" parent="Node3D"]
+transform = Transform3D(24.077183, -0.0026437521, -7.153232e-05, 0.006376475, 9.981721, -5.6976092e-05, 0.004283223, 0.0014136105, 0.40218604, 0.11719565, 2.8236947, -15.932292)
+use_collision = true
+size = Vector3(1.0933838, 1, 1)
+material = SubResource("StandardMaterial3D_trj04")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-0.00012473162, -0.0003182487, -14.459544, -2.7255018, 0.86769485, -0.0038293893, 4.7574325, 0.49709675, -0.0025729195, 0.41514537, 10.590126, -20.293425)
+mesh = SubResource("PlaneMesh_16hvj")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_opfnp")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(4.6101336, -0.54129994, -0.0032660933, 2.9678605, 0.84082955, -0.0026014706, 0.0012403971, 2.2843327e-05, 18.363409, 17.477827, 9.844805, 0.61324465)
+mesh = SubResource("PlaneMesh_16hvj")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_yhxw7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_n45e2")
+}

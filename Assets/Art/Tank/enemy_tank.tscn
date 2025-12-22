@@ -1,7 +1,7 @@
-[gd_scene load_steps=15 format=4 uid="uid://hcj3icu5cfr0"]
+[gd_scene load_steps=18 format=4 uid="uid://35avh2pulfg3"]
 
-[ext_resource type="Script" uid="uid://di185iin6hwn6" path="res://Assets/Art/Tank/tank.gd" id="1_woynq"]
-[ext_resource type="Texture2D" uid="uid://ebfkp2jd3xhv" path="res://Assets/Art/Tank/TankFinalFR_0.png" id="3_14kpq"]
+[ext_resource type="Script" uid="uid://jus7etdbg04b" path="res://Assets/Art/Tank/enemy_tank.gd" id="1_ervd3"]
+[ext_resource type="Texture2D" uid="uid://dk0ses1j3trxm" path="res://Assets/Art/Tank/tankTextureBlue.png" id="2_ervd3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_woynq"]
 radius = 0.9679208
@@ -12,7 +12,7 @@ transparency = 2
 alpha_scissor_threshold = 0.05
 alpha_antialiasing_mode = 0
 cull_mode = 2
-albedo_texture = ExtResource("3_14kpq")
+albedo_texture = ExtResource("2_ervd3")
 texture_filter = 0
 texture_repeat = false
 
@@ -84,6 +84,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_40uak")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbg0f"]
+albedo_color = Color(0, 0, 1, 1)
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_v2cma"]
 _surfaces = [{
 "aabb": AABB(-0.66666687, -0.27083313, -0.15625, 1.3125, 0.5625, 0.3125),
@@ -148,23 +151,54 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_w8ene")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hutg"]
-bg_color = Color(0.9898438, 3.946722e-06, 7.70092e-07, 1)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ervd3"]
+height = 1.050293
+radius = 10.080078
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_woynq"]
-bg_color = Color(1, 0.6, 0, 1)
+[sub_resource type="Animation" id="Animation_gbg0f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pivot/muzzle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
-[node name="Tank" type="CharacterBody3D" groups=["Red"]]
+[sub_resource type="Animation" id="Animation_ervd3"]
+resource_name = "aurafarm"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pivot/muzzle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.9501572, 0), Vector3(0, 0.73700017, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fcln1"]
+_data = {
+&"RESET": SubResource("Animation_gbg0f"),
+&"aurafarm": SubResource("Animation_ervd3")
+}
+
+[node name="Tank" type="CharacterBody3D" groups=["Blue"]]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
-script = ExtResource("1_woynq")
+script = ExtResource("1_ervd3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0028381133, 0.62458897, 0.09522915)
 shape = SubResource("SphereShape3D_woynq")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.25387618, 0.96723676, 0, -0.96723676, 0.25387618, 0, 10.589923, 2.1766987)
-current = true
 
 [node name="pivot" type="Node3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
@@ -187,6 +221,7 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.011887255, 0.74071693, 0.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1446444, -0.2657169, -0.0026958701)
 mesh = SubResource("ArrayMesh_14kpq")
 skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_gbg0f")
 
 [node name="wheel_left" type="Node3D" parent="blockbench_export"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.65625, 0.27083334, 0.083333336)
@@ -204,53 +239,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0833333e-07, -2.0833333e-07
 mesh = SubResource("ArrayMesh_ar6yi")
 skeleton = NodePath("")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
 
-[node name="Control" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
+[node name="Area3D" type="Area3D" parent="."]
 
-[node name="txt_Score" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_top = 8.0
-offset_right = 20.0
-offset_bottom = 31.0
-grow_horizontal = 2
-text = "SCORE"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47485352, 0)
+shape = SubResource("CylinderShape3D_ervd3")
 
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer/Control"]
-visible = false
-layout_mode = 0
-offset_left = 3.0
-offset_top = 253.0
-offset_right = 202.0
-offset_bottom = 280.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_2hutg")
-value = 50.0
-
-[node name="AccelerateBar" type="ProgressBar" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 307.0
-offset_top = 259.0
-offset_right = 506.0
-offset_bottom = 286.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_woynq")
-
-[node name="BoostTimer" type="Timer" parent="."]
-
-[node name="TimeLeft" type="Timer" parent="."]
-wait_time = 180.0
+[node name="ShouldJump" type="Timer" parent="."]
+wait_time = 3.0
 autostart = true
 
-[connection signal="timeout" from="TimeLeft" to="." method="_on_time_left_timeout"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_fcln1")
+}
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="ShouldJump" to="." method="_on_should_jump_timeout"]

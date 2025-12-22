@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://gru8p7a50up1" path="res://Assets/Art/Environment/Orange/texture_01.png" id="1_ygief"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ygief"]
-bounce = 0.7
+bounce = 0.3
 
 [sub_resource type="SphereMesh" id="SphereMesh_77ri6"]
 
@@ -15,10 +15,9 @@ albedo_texture = ExtResource("1_ygief")
 radius = 0.5151019
 
 [node name="Ball" type="RigidBody3D" groups=["Ball"]]
+mass = 2.0
 physics_material_override = SubResource("PhysicsMaterial_ygief")
 continuous_cd = true
-linear_damp = 0.1
-angular_damp = 0.5
 script = ExtResource("1_77ri6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -29,3 +28,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_13tqr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 shape = SubResource("SphereShape3D_iiwn1")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+
+[node name="Center" type="Marker3D" parent="."]

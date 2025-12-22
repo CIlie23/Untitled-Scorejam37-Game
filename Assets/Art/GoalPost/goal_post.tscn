@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci4lphraqsddo"]
+
+[ext_resource type="Script" uid="uid://ctbd4imu6o64d" path="res://Assets/Art/GoalPost/goal_post.gd" id="1_bw0vr"]
+[ext_resource type="Texture2D" uid="uid://dxksc8gnpumro" path="res://Assets/Art/Environment/Dark/texture_08.png" id="1_yn65e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bw0vr"]
+albedo_texture = ExtResource("1_yn65e")
+
+[sub_resource type="BoxMesh" id="BoxMesh_jflri"]
+material = SubResource("StandardMaterial3D_bw0vr")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rwgga"]
+size = Vector3(4.00972, 2.5593262, 0.54156494)
+
+[node name="GoalPost" type="Node3D"]
+script = ExtResource("1_bw0vr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.1023836, 0, 0, 0, 2.56447, 0, 0, 0, 0.49559337, 0, 0, 0)
+mesh = SubResource("BoxMesh_jflri")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05077362, 0.016723633, -0.006011963)
+shape = SubResource("BoxShape3D_rwgga")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

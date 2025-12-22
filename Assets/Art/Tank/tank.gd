@@ -32,10 +32,18 @@ var isAccelerating: bool = false
 var last_direction = Vector3.FORWARD
 @export var rotation_movementSpeed = 2
 
+@onready var txt_Score: Label = $CanvasLayer/Control/txt_Score
+@onready var time_left: Timer = $TimeLeft
+
 func _ready():
-	print(movementSpeed)
+	pass
 
 func _process(delta: float) -> void:
+
+	var time_left = time_left.time_left
+	var minutes = int(time_left) / 60
+	var seconds = int(time_left) % 60
+	txt_Score.text = "Blu " + str(Global.blueScore) + "| %02d:%02d |" % [minutes, seconds] + str(Global.redScore) + " Red"
 	if Input.is_action_just_pressed("fireTurret"):
 		print("boom")
 		instance = SHELL.instantiate()
@@ -70,7 +78,7 @@ func _physics_process(delta: float) -> void:
 	if canAccelerate and isAccelerating:
 		currentBoost -= 30 * delta
 		movementSpeed = boostedMovementSpeed
-		print("zooming rn " + str(movementSpeed))
+		#print("zooming rn " + str(movementSpeed))
 		if currentBoost <= 0:
 			isAccelerating = false
 			canAccelerate = false
@@ -130,3 +138,7 @@ func get_mouse_world_pos():
 	var world_pos = plane.intersects_ray(from, to)
 	
 	return world_pos
+
+
+func _on_time_left_timeout() -> void:
+	pass # Replace with function body.
