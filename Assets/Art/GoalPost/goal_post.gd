@@ -1,6 +1,7 @@
 extends Node3D
 
 @onready var spawner := get_tree().get_first_node_in_group("Spawner")
+@onready var pop: AudioStreamPlayer2D = $Pop
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if not body.is_in_group("Ball"):
@@ -13,6 +14,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	elif is_in_group("GoalRed"):
 		Global.redScore += 1
 		print(Global.redScore, " score for red")
-
+	
+	pop.play()
 	body.queue_free()
 	spawner.spawn_new_ball()

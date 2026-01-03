@@ -23,4 +23,6 @@ func spawn_new_ball():
 
 func _on_kill_zone_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Ball"):
-			spawn_new_ball()
+		spawn_new_ball()
+	if body.is_in_group("Blue"):
+		print("hi blue")

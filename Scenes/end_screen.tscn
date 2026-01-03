@@ -1,0 +1,125 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6rdp8mkvefqw"]
+
+[ext_resource type="Script" uid="uid://dvueif2j4b2gv" path="res://Scenes/end_screen.gd" id="1_f2mtv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2mtv"]
+bg_color = Color(0.18000486, 0.1800049, 0.18000478, 1)
+
+[node name="EndScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f2mtv")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_f2mtv")
+
+[node name="Label" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -91.5
+offset_top = 16.0
+offset_right = 91.5
+offset_bottom = 51.0
+grow_horizontal = 2
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[wave]ROUND OVER!"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -189.0
+offset_top = -40.0
+offset_right = 189.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlayerName" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -256.0
+offset_right = 32.0
+offset_bottom = -233.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -48.0
+offset_right = 80.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SubmitScore" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "SUBMIT"
+
+[node name="PlayAgain" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
+text = "PLAY AGAIN"
+
+[node name="YourScore" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.5
+offset_top = -11.5
+offset_right = 90.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOU SCORED: X POINTS"
+
+[node name="user" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 208.0
+offset_right = 360.0
+offset_bottom = 239.0
+placeholder_text = "Enter your name here..."
+
+[node name="Successs" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 77.0
+offset_right = 508.0
+offset_bottom = 100.0
+text = "Score submitted! You will be sent to the main menu in 3 seconds"
+
+[connection signal="pressed" from="Control/HBoxContainer/SubmitScore" to="." method="_on_submit_score_pressed"]
+[connection signal="pressed" from="Control/HBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="text_changed" from="user" to="." method="_on_user_text_changed"]

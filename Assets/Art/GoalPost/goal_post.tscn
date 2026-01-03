@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ci4lphraqsddo"]
+[gd_scene load_steps=7 format=3 uid="uid://ci4lphraqsddo"]
 
 [ext_resource type="Script" uid="uid://ctbd4imu6o64d" path="res://Assets/Art/GoalPost/goal_post.gd" id="1_bw0vr"]
 [ext_resource type="Texture2D" uid="uid://dxksc8gnpumro" path="res://Assets/Art/Environment/Dark/texture_08.png" id="1_yn65e"]
+[ext_resource type="AudioStream" uid="uid://btxbbf7rnumo6" path="res://Assets/Sounds/partyblower.mp3" id="3_jflri"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bw0vr"]
 albedo_texture = ExtResource("1_yn65e")
@@ -24,5 +25,9 @@ mesh = SubResource("BoxMesh_jflri")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05077362, 0.016723633, -0.006011963)
 shape = SubResource("BoxShape3D_rwgga")
+
+[node name="Pop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_jflri")
+volume_db = -24.398
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

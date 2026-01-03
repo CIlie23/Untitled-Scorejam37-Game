@@ -31,9 +31,6 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 albedo_color = Color(1, 1, 1, 0)
 albedo_texture = ExtResource("4_o06y3")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fj1v"]
-albedo_color = Color(1, 1, 1, 0)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fo5ed"]
 albedo_texture = ExtResource("6_k7acu")
 
@@ -51,6 +48,9 @@ albedo_texture = ExtResource("6_k7acu")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fo5ed"]
 material = SubResource("StandardMaterial3D_5v1tr")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o06y3"]
+size = Vector3(58.751312, 5.3825836, 70.20635)
 
 [node name="World" type="Node3D" groups=["Spawner"]]
 script = ExtResource("1_5a7ea")
@@ -92,12 +92,6 @@ use_collision = true
 size = Vector3(12.706436, 1, 17.241455)
 material = SubResource("StandardMaterial3D_go701")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.1161108, 25.265295, 1.056)
-use_collision = true
-size = Vector3(12.706436, 0.001, 17.241455)
-material = SubResource("StandardMaterial3D_0fj1v")
-
 [node name="MeshInstance3D" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(0.5076608, 0, 0, 0, 8.120396, 0, 0, 0, 34.88293, -12.409218, 3.7018108, 1.0287209)
 use_collision = true
@@ -121,22 +115,37 @@ size = Vector3(1.0933838, 1, 1)
 material = SubResource("StandardMaterial3D_k7acu")
 
 [node name="Tank2" parent="." instance=ExtResource("5_fo5ed")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -1.1509266, 0.99999714, -9.826557)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -1.1509266, 6.606536, -9.826557)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(4.2859063, 0.62366134, 0, -3.419435, 0.78169465, 0, 0, 0, 18.363407, -16.818668, 10.970746, 0.60979795)
-mesh = SubResource("PlaneMesh_fo5ed")
+[node name="BoxStuff" type="Node" parent="."]
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(-2.3966254e-07, 0, 14.459545, -2.7267382, 0.8675659, -3.1433095e-07, -4.7567244, -0.49732226, -5.483422e-07, 0.41238642, 10.587159, 23.02683)
-mesh = SubResource("PlaneMesh_fo5ed")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(-2.0797084e-07, -2.172342e-08, -14.459545, -2.7248282, 0.8677654, 0, 4.7578187, 0.49697393, -6.320468e-07, 0.41238642, 10.587159, -20.293941)
-mesh = SubResource("PlaneMesh_fo5ed")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="BoxStuff"]
 transform = Transform3D(4.6109195, -0.5410772, 0, 2.9666395, 0.8409729, 0, 0, 0, 18.363407, 17.47859, 9.84028, 0.60979795)
 mesh = SubResource("PlaneMesh_fo5ed")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BoxStuff"]
+transform = Transform3D(4.2859063, 0.62366134, 0, -3.419435, 0.78169465, 0, 0, 0, 18.363407, -16.818668, 10.970746, 0.60979795)
+mesh = SubResource("PlaneMesh_fo5ed")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="BoxStuff"]
+transform = Transform3D(-2.3966254e-07, 0, 14.459545, -2.7267382, 0.8675659, -3.1433095e-07, -4.7567244, -0.49732226, -5.483422e-07, 0.41238642, 10.587159, 23.02683)
+mesh = SubResource("PlaneMesh_fo5ed")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="BoxStuff"]
+transform = Transform3D(-2.0797084e-07, -2.172342e-08, -14.459545, -2.7248282, 0.8677654, 0, 4.7578187, 0.49697393, -6.320468e-07, 0.41238642, 10.587159, -20.293941)
+mesh = SubResource("PlaneMesh_fo5ed")
+skeleton = NodePath("../..")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.072056, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3154287, 5.955324, 1.0849037)
+shape = SubResource("BoxShape3D_o06y3")
 
 [connection signal="body_entered" from="KillZone" to="." method="_on_kill_zone_body_entered"]

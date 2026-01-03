@@ -1,9 +1,13 @@
-[gd_scene load_steps=19 format=3 uid="uid://ns47jgwcqdvj"]
+[gd_scene load_steps=28 format=3 uid="uid://ns47jgwcqdvj"]
 
 [ext_resource type="PackedScene" uid="uid://35avh2pulfg3" path="res://Assets/Art/Tank/enemy_tank.tscn" id="1_28flt"]
 [ext_resource type="Script" uid="uid://dvu4c4ij02qsg" path="res://Scenes/main_menu.gd" id="1_ce3w2"]
-[ext_resource type="PackedScene" uid="uid://10aipp4jmgtd" path="res://addons/talo/samples/leaderboards/leaderboard.tscn" id="2_48xlc"]
+[ext_resource type="PackedScene" uid="uid://cc4cyknxlh727" path="res://Scenes/leaderboard_ui.tscn" id="3_n45e2"]
 [ext_resource type="Texture2D" uid="uid://csxh0usqoybq3" path="res://Assets/Art/wall.jpg" id="4_ce3w2"]
+[ext_resource type="FontFile" uid="uid://drc15w58n4iai" path="res://Assets/Fonts/nokiafc22.ttf" id="4_n45e2"]
+[ext_resource type="PackedScene" uid="uid://i2m2v8qf6uqf" path="res://Scenes/audioslider.tscn" id="5_yhxw7"]
+[ext_resource type="AudioStream" uid="uid://dnnsxm4emfacs" path="res://Assets/Sounds/hover.wav" id="6_opfnp"]
+[ext_resource type="AudioStream" uid="uid://cd8ckij0fjb0e" path="res://Assets/Sounds/click.wav" id="7_cp0ys"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_28flt"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -16,6 +20,9 @@ sky_material = SubResource("ProceduralSkyMaterial_28flt")
 background_mode = 2
 sky = SubResource("Sky_48xlc")
 tonemap_mode = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cp0ys"]
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ce3w2"]
 albedo_color = Color(1, 1, 1, 0)
@@ -79,6 +86,62 @@ _data = {
 &"pan": SubResource("Animation_1ehe0")
 }
 
+[sub_resource type="Animation" id="Animation_yhxw7"]
+resource_name = "FadeIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/Panel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"changeScene"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_cp0ys"]
+resource_name = "FadeOut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/Panel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_trj04"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_trj04"]
+_data = {
+&"FadeIn": SubResource("Animation_yhxw7"),
+&"FadeOut": SubResource("Animation_cp0ys"),
+&"RESET": SubResource("Animation_trj04")
+}
+
 [node name="MainMenu" type="Node3D"]
 script = ExtResource("1_ce3w2")
 
@@ -98,7 +161,7 @@ script = null
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="MainMenu" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,26 +169,200 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 143.0
-offset_right = 172.0
-offset_bottom = 192.0
-text = "Evil ass tank soccer"
+[node name="LeaderboardUI" parent="CanvasLayer/MainMenu" instance=ExtResource("3_n45e2")]
+layout_mode = 1
+offset_left = 256.0
+offset_right = -9.0
+mouse_filter = 2
 
-[node name="Button" type="Button" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 221.0
-offset_right = 71.0
-offset_bottom = 252.0
-text = "PLAY"
+[node name="Control" type="Control" parent="CanvasLayer/MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -285.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Leaderboard" parent="CanvasLayer/Control" instance=ExtResource("2_48xlc")]
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/Control"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 135.0
+offset_right = 226.0
+offset_bottom = 184.0
+theme_override_fonts/font = ExtResource("4_n45e2")
+text = "Tankball Arena"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -128.0
+offset_right = 77.0
+offset_bottom = -27.0
+grow_vertical = 0
+
+[node name="Play" type="Button" parent="CanvasLayer/MainMenu/Control/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+flat = true
+alignment = 0
+
+[node name="Options" type="Button" parent="CanvasLayer/MainMenu/Control/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+flat = true
+alignment = 0
+
+[node name="Credits" type="Button" parent="CanvasLayer/MainMenu/Control/VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+flat = true
+alignment = 0
+
+[node name="Credits" type="Control" parent="CanvasLayer"]
 visible = false
-position = Vector2(144, -17)
-scale = Vector2(0.5, 0.5)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Credits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 31.0
+offset_top = 15.0
+offset_right = -40.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/Credits/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.5
+offset_top = 5.0
+offset_right = 33.5
+offset_bottom = 28.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[wave]CREDITS"
+
+[node name="Close" type="Button" parent="CanvasLayer/Credits/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Close"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Credits/Panel"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 36.0
+offset_right = 151.0
+offset_bottom = 85.0
+text = "Song:
+\"three\" by saavane
+
+Leaderboard by Dino0040
+
+SFX from sfxr.me
+
+Thanks for playing!"
+
+[node name="Options" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 31.0
+offset_top = 15.0
+offset_right = -40.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/Options/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.5
+offset_top = 5.0
+offset_right = 33.5
+offset_bottom = 28.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[wave]Options"
+
+[node name="Close" type="Button" parent="CanvasLayer/Options/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Close"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Options/Panel"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 66.0
+offset_bottom = 63.0
+text = "Controls:
+WASD - to move
+SHIFT - to boost
+SPACE - to jump
+
+Shoot or bump into the 
+ball to move it forward
+forward or bum"
+
+[node name="audioslider" parent="CanvasLayer/Options/Panel" instance=ExtResource("5_yhxw7")]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 60.0
+offset_right = 374.0
+offset_bottom = 76.0
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cp0ys")
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(0.88647836, 0, 0.46277007, 0, 1, 0, -0.46277007, 0, 0.88647836, 0, -0.8053782, 0)
@@ -165,7 +402,28 @@ mesh = SubResource("PlaneMesh_16hvj")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_yhxw7")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="CameraAnim" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_n45e2")
 }
+
+[node name="HoverSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_opfnp")
+volume_db = -0.145
+
+[node name="ClickSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_cp0ys")
+
+[node name="Fade" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_trj04")
+}
+
+[connection signal="mouse_entered" from="CanvasLayer/MainMenu/Control/VBoxContainer/Play" to="." method="_on_play_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/Control/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MainMenu/Control/VBoxContainer/Options" to="." method="_on_tutorial_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/Control/VBoxContainer/Options" to="." method="_on_tutorial_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/MainMenu/Control/VBoxContainer/Credits" to="." method="_on_credits_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/Control/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="CanvasLayer/Credits/Panel/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="CanvasLayer/Options/Panel/Close" to="." method="_on_close_pressed"]

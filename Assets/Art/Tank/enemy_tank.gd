@@ -8,6 +8,7 @@ extends CharacterBody3D
 var movementSpeed: float
 @export var baseSpeed: float = 8.0
 @export var boostedMovementSpeed: int = 10
+var GRAVITY: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 const JUMP_VELOCITY = 4.5
 
@@ -44,6 +45,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	pass
 	
 func _physics_process(delta: float) -> void:
+	# Apply gravity
+	if not is_on_floor():
+		velocity.y -= GRAVITY * delta
+	else:
+		velocity.y = 0.0
+		
 	if not is_instance_valid(ball):
 		ball = get_tree().get_first_node_in_group("Ball")
 		return

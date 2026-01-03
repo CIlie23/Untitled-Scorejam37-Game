@@ -7,10 +7,11 @@ extends CharacterBody3D
 @onready var muzzle: MeshInstance3D = $pivot/muzzle
 #@onready var barrel: RayCast3D = $pivot/muzzle/barrel
 @onready var barrel: RayCast3D = $pivot/muzzle/barrel
-
+@onready var shoot: AudioStreamPlayer2D = $Shoot
 
 @onready var tankBody: Node3D = $blockbench_export
 @onready var accelerate_bar: ProgressBar = $CanvasLayer/Control/AccelerateBar
+@onready var fade: AnimationPlayer = $Fade
 
 const SHELL = preload("uid://cui5wr0adk0gn")
 var instance
@@ -27,6 +28,7 @@ const MUZZLE_TURN_SPEED = 0.003
 @export var maxBoost: float = 100
 @export var currentBoost: float = maxBoost
 
+
 var canAccelerate: bool = false
 var isAccelerating: bool = false
 var last_direction = Vector3.FORWARD
@@ -34,9 +36,13 @@ var last_direction = Vector3.FORWARD
 
 @onready var txt_Score: Label = $CanvasLayer/Control/txt_Score
 @onready var time_left: Timer = $TimeLeft
+@onready var move: AudioStreamPlayer2D = $Move
+@onready var jump: AudioStreamPlayer2D = $Jump
+@onready var end_screen: Control = $CanvasLayer/EndScreen
+@onready var overlay: Control = $CanvasLayer/Control
 
 func _ready():
-	pass
+	fade.play("FadeOut")
 
 func _process(delta: float) -> void:
 
@@ -45,7 +51,7 @@ func _process(delta: float) -> void:
 	var seconds = int(time_left) % 60
 	txt_Score.text = "Blu " + str(Global.blueScore) + "| %02d:%02d |" % [minutes, seconds] + str(Global.redScore) + " Red"
 	if Input.is_action_just_pressed("fireTurret"):
-		print("boom")
+		shoot.play()
 		instance = SHELL.instantiate()
 		instance.position = barrel.global_position
 		instance.transform.basis = barrel.global_transform.basis
@@ -93,6 +99,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
+		jump.play()
 		velocity.y = JUMP_VELOCITY 
 	
 	if Input.is_action_just_pressed("accelerate") and currentBoost >= maxBoost:
@@ -112,15 +119,13 @@ func _physics_process(delta: float) -> void:
 		
 	if direction:
 		#last_direction = direction
+		move.play()
 		velocity.x = direction.x * movementSpeed
 		velocity.z = direction.z * movementSpeed
 		
 		var target_angle = atan2(velocity.x, velocity.z)
 		tankBody.rotation.y = lerp_angle(tankBody.rotation.y, target_angle, delta * rotation_movementSpeed)
-		
-		#if velocity.length() > 0.1:
-			#var target_angle = atan2(velocity.x, velocity.z)
-			#tankBody.rotation.y = lerp_angle(tankBody.rotation.y, target_angle, delta * 1.0)
+
 	else:
 		velocity.x = move_toward(velocity.x, 0, movementSpeed)
 		velocity.z = move_toward(velocity.z, 0, movementSpeed)
@@ -141,4 +146,4 @@ func get_mouse_world_pos():
 
 
 func _on_time_left_timeout() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://Scenes/end_screen.tscn")

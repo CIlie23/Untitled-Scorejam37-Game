@@ -1,7 +1,11 @@
-[gd_scene load_steps=15 format=4 uid="uid://hcj3icu5cfr0"]
+[gd_scene load_steps=24 format=4 uid="uid://hcj3icu5cfr0"]
 
 [ext_resource type="Script" uid="uid://di185iin6hwn6" path="res://Assets/Art/Tank/tank.gd" id="1_woynq"]
+[ext_resource type="PackedScene" uid="uid://b6rdp8mkvefqw" path="res://Scenes/end_screen.tscn" id="3_2hutg"]
 [ext_resource type="Texture2D" uid="uid://ebfkp2jd3xhv" path="res://Assets/Art/Tank/TankFinalFR_0.png" id="3_14kpq"]
+[ext_resource type="AudioStream" uid="uid://cl0ttyhl0xj0w" path="res://Assets/Sounds/explosion.wav" id="4_14kpq"]
+[ext_resource type="AudioStream" uid="uid://cnvb4qlenkcii" path="res://Assets/Sounds/move.mp3" id="5_ar6yi"]
+[ext_resource type="AudioStream" uid="uid://c6ybx4q05xmgd" path="res://Assets/Sounds/jump.wav" id="6_ar6yi"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_woynq"]
 radius = 0.9679208
@@ -154,6 +158,51 @@ bg_color = Color(0.9898438, 3.946722e-06, 7.70092e-07, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_woynq"]
 bg_color = Color(1, 0.6, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_14kpq"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_2hutg"]
+resource_name = "FadeIn "
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/Panel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_14kpq"]
+resource_name = "FadeOut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/Panel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_eotdn"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eotdn"]
+_data = {
+&"FadeIn ": SubResource("Animation_2hutg"),
+&"FadeOut": SubResource("Animation_14kpq"),
+&"RESET": SubResource("Animation_eotdn")
+}
+
 [node name="Tank" type="CharacterBody3D" groups=["Red"]]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
 script = ExtResource("1_woynq")
@@ -247,10 +296,45 @@ offset_right = 506.0
 offset_bottom = 286.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_woynq")
 
+[node name="EndScreen" parent="CanvasLayer" instance=ExtResource("3_2hutg")]
+visible = false
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_14kpq")
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 407.0
+offset_top = 236.0
+offset_right = 507.0
+offset_bottom = 259.0
+text = "Boost meter"
+
 [node name="BoostTimer" type="Timer" parent="."]
 
 [node name="TimeLeft" type="Timer" parent="."]
-wait_time = 180.0
+wait_time = 120.0
 autostart = true
+
+[node name="Fade" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_eotdn")
+}
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_14kpq")
+volume_db = -21.204
+
+[node name="Move" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_ar6yi")
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_ar6yi")
+volume_db = -40.388
 
 [connection signal="timeout" from="TimeLeft" to="." method="_on_time_left_timeout"]
